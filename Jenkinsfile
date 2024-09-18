@@ -3,23 +3,38 @@ node {
         checkout scm
     }
     stage('Build') {
-        docker.image('maven:3.9.9').inside {
-            sh 'mvn clean package'
+        try {
+            docker.image('maven:3.9.9').inside {
+                sh 'mvn clean package'
+            }
+        } catch (Exception e) {
+            echo "Build failed: ${e.getMessage()}"
+            error("Build stage failed")
         }
     }
     stage('Test') {
         parallel (
-            "unit-tests": {
-                docker.image('maven:3.9.9').inside {
-                    sh 'mvn test'
-            }
-            },
-            "performance-tests": {
-                docker.image('jmeter:latest').inside {
-                    sh 'jmeter -n -t my_test_plan.jmx -l result.jtl'
+            try {
+                "unit-tests": {
+                    docker.image('maven:3.9.9').inside {
+                        sh 'mvn test'
+                    }
                 }
-                archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
-                perfReport sourceDataFiles: 'result.jtl'
+            } catch (Exception e) {
+                echo "Unit tests failed: ${e.getMessage()}"
+                error("Unit Test stage failed")
+            },
+            try {
+                "performance-tests": {
+                    docker.image('justb4/jmeter:5.4.3').inside {
+                        sh 'jmeter -n -t my_test_plan.jmx -l result.jtl'
+                    }
+                    archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
+                    perfReport sourceDataFiles: 'result.jtl'
+                }
+            } catch (Exception e) {
+                echo "Performance tests failed: ${e.getMessage()}"
+                error("Performance Test stage failed")
             }
         )
     }
