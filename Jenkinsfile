@@ -2,6 +2,10 @@ node {
     stage('Checkout') {
         checkout scm
     }
+    stage('Verify Test Plan') {
+        // List files to verify the presence of my_test_plan.jmx
+        sh 'ls -la jmeter/my_test_plan.jmx'
+    }
     stage('Build') {
         try {
             docker.image('maven:3.9.9').inside {
@@ -22,7 +26,7 @@ node {
                 },
                 "performance-tests": {
                     docker.image('justb4/jmeter:5.5').inside {
-                        sh 'jmeter -n -t my_test_plan.jmx -l result.jtl'
+                        sh 'jmeter -n -t jmeter/my_test_plan.jmx -l result.jtl'
                     }
                     archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
                     perfReport sourceDataFiles: 'result.jtl'

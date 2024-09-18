@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+        <stringProp name="TestPlan.comments"></stringProp>
+        <boolProp name="TestPlan.functional_mode">false</boolProp>
+        <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+        <elementProp name="TestPlan.user_defined_variables" elementType="Arguments">
+            <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <elementProp name="TestPlan.test_plan" elementType="TestPlan">
+            <collectionProp name="TestPlan.test_scenarios">
+                <elementProp name="Test Plan" elementType="ThreadGroup">
+                    <stringProp name="ThreadGroup.num_threads">1</stringProp>
+                    <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+                    <stringProp name="ThreadGroup.duration">60</stringProp>
+                    <stringProp name="ThreadGroup.delay">0</stringProp>
+                    <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+                    <elementProp name="ThreadGroup.main_loop" elementType="LoopController">
+                        <stringProp name="LoopController.loops">1</stringProp>
+                    </elementProp>
+                    <elementProp name="ThreadGroup.requests" elementType="HashTree">
+                        <elementProp name="HTTP Request" elementType="HTTPSamplerProxy">
+                            <stringProp name="HTTPSampler.domain">www.example.com</stringProp>
+                            <stringProp name="HTTPSampler.port">80</stringProp>
+                            <stringProp name="HTTPSampler.protocol">http</stringProp>
+                            <stringProp name="HTTPSampler.path">/</stringProp>
+                            <stringProp name="HTTPSampler.method">GET</stringProp>
+                            <elementProp name="HTTPSampler.parameters" elementType="Arguments">
+                                <collectionProp name="Arguments.arguments"/>
+                            </elementProp>
+                            <elementProp name="HTTP Request" elementType="HashTree"/>
+                        </elementProp>
+                    </elementProp>
+                </elementProp>
+            </collectionProp>
+        </elementProp>
+        <elementProp name="TestPlan.hash_tree" elementType="HashTree"/>
+    </TestPlan>
+</jmeterTestPlan>
