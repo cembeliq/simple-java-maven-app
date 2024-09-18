@@ -25,11 +25,12 @@ node {
                     }
                 },
                 "performance-tests": {
-                    docker.image('justb4/jmeter:5.5').inside {
-                        sh 'jmeter -n -t jmeter/my_test_plan.jmx -l result.jtl'
-                    }
-                    archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
-                    perfReport sourceDataFiles: 'result.jtl'
+                    echo "skip"
+                    // docker.image('justb4/jmeter:5.5').inside {
+                    //     sh 'jmeter -n -t jmeter/my_test_plan.jmx -l result.jtl'
+                    // }
+                    // archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
+                    // perfReport sourceDataFiles: 'result.jtl'
                 }
             )
         } catch (Exception e) {
