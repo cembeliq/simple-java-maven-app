@@ -1,14 +1,22 @@
 node {
     stage('Build') {
-        sh 'mvn clean package'
+        docker.image('maven:3.9.9').inside {
+            sh 'mvn clean package'
+        }
     }
     stage('Test') {
         parallel (
             "unit-tests": {
-                sh 'mvn test'
+                docker.image('maven:3.9.9').inside {
+                    sh 'mvn test'
+            }
             },
             "performance-tests": {
-                sh 'jmeter -n -t my_test_plan.jmx'
+                docker.image('jmeter:latest').inside {
+                    sh 'jmeter -n -t my_test_plan.jmx -l result.jtl'
+                }
+                archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
+                perfReport sourceDataFiles: 'result.jtl'
             }
         )
     }
