@@ -12,7 +12,7 @@
                 <elementProp name="Test Plan" elementType="ThreadGroup">
                     <stringProp name="ThreadGroup.num_threads">1</stringProp>
                     <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-                    <stringProp name="ThreadGroup.duration">60</stringProp>
+                    <stringProp name="ThreadGroup.duration">5</stringProp>
                     <stringProp name="ThreadGroup.delay">0</stringProp>
                     <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
                     <elementProp name="ThreadGroup.main_loop" elementType="LoopController">
