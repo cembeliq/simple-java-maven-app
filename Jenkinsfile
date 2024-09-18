@@ -21,7 +21,7 @@ node {
                     }
                 },
                 "performance-tests": {
-                    docker.image('justb4/jmeter:5.4.3').inside {
+                    docker.image('justb4/jmeter:5.5').inside {
                         sh 'jmeter -n -t my_test_plan.jmx -l result.jtl'
                     }
                     archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
