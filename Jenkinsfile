@@ -13,18 +13,13 @@ node {
         }
     }
     stage('Test') {
-        parallel (
-            try {
+        try {
+            parallel (
                 "unit-tests": {
                     docker.image('maven:3.9.9').inside {
                         sh 'mvn test'
                     }
-                }
-            } catch (Exception e) {
-                echo "Unit tests failed: ${e.getMessage()}"
-                error("Unit Test stage failed")
-            },
-            try {
+                },
                 "performance-tests": {
                     docker.image('justb4/jmeter:5.4.3').inside {
                         sh 'jmeter -n -t my_test_plan.jmx -l result.jtl'
@@ -32,11 +27,11 @@ node {
                     archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
                     perfReport sourceDataFiles: 'result.jtl'
                 }
-            } catch (Exception e) {
-                echo "Performance tests failed: ${e.getMessage()}"
-                error("Performance Test stage failed")
-            }
-        )
+            )
+        } catch (Exception e) {
+            echo "Test stage failed: ${e.getMessage()}"
+            error("Test stage failed")
+        }
     }
     // stage('Deploy') {
     //     withCredentials([usernamePassword(credentialsId: 'my-ansible-credentials', usernameVariable: 'ANSIBLE_USER', passwordVariable: 'ANSIBLE_PASSWORD')]) {
