@@ -1,4 +1,7 @@
 node {
+    stage('Checkout') {
+        checkout scm
+    }
     stage('Build') {
         docker.image('maven:3.9.9').inside {
             sh 'mvn clean package'
