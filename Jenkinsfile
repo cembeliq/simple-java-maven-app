@@ -40,7 +40,7 @@ node {
     // }
     stage('Deploy') {
         try {
-            withCredentials([sshUserPrivateKey(credentialsId: '6e200d7e-ce37-427e-b43a-48ac73fae17f', keyFileVariable: 'SSH_KEY')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: '6883e1b1-dd40-41fd-8cc1-561e37027b10', keyFileVariable: 'SSH_KEY')]) {
                 def keyFile = 'temp_ssh_key'
                 writeFile file: keyFile, text: SSH_KEY
                 sh "chmod 400 ${keyFile}"
