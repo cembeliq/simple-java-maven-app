@@ -52,12 +52,12 @@ node {
 
                 // Transfer the JAR file
                 sh """
-                scp -i ${keyFile} ${appJar} ${ec2User}@${ec2Host}:${remotePath}
+                scp -i ${keyFile} -o StrictHostKeyChecking=no ${appJar} ${ec2User}@${ec2Host}:${remotePath}
                 """
 
                 // SSH into EC2
                 sh """
-                ssh -i ${keyFile} ${ec2User}@${ec2Host} << EOF
+                ssh -i ${keyFile} -o StrictHostKeyChecking=no ${ec2User}@${ec2Host} << EOF
                 pkill -f my-app-1.0-SNAPSHOT.jar || true
                 nohup java -jar ${remotePath}my-app-1.0-SNAPSHOT.jar > app.log 2>&1 &
                 EOF
