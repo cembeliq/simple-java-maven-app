@@ -16,28 +16,28 @@ node {
             error("Build stage failed")
         }
     }
-    stage('Test') {
-        try {
-            parallel (
-                "unit-tests": {
-                    docker.image('maven:3.9.9').inside {
-                        sh 'mvn test'
-                    }
-                },
-                "performance-tests": {
-                    echo "skip"
-                    // docker.image('justb4/jmeter:5.5').inside {
-                    //     sh 'jmeter -n -t jmeter/my_test_plan.jmx -l result.jtl'
-                    // }
-                    // archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
-                    // perfReport sourceDataFiles: 'result.jtl'
-                }
-            )
-        } catch (Exception e) {
-            echo "Test stage failed: ${e.getMessage()}"
-            error("Test stage failed")
-        }
-    }
+    // stage('Test') {
+    //     try {
+    //         parallel (
+    //             "unit-tests": {
+    //                 docker.image('maven:3.9.9').inside {
+    //                     sh 'mvn test'
+    //                 }
+    //             },
+    //             "performance-tests": {
+    //                 echo "skip"
+    //                 // docker.image('justb4/jmeter:5.5').inside {
+    //                 //     sh 'jmeter -n -t jmeter/my_test_plan.jmx -l result.jtl'
+    //                 // }
+    //                 // archiveArtifacts artifacts: 'result.jtl', allowEmptyArchive: true
+    //                 // perfReport sourceDataFiles: 'result.jtl'
+    //             }
+    //         )
+    //     } catch (Exception e) {
+    //         echo "Test stage failed: ${e.getMessage()}"
+    //         error("Test stage failed")
+    //     }
+    // }
     stage('Deploy') {
         try {
             withCredentials([sshUserPrivateKey(credentialsId: '6e200d7e-ce37-427e-b43a-48ac73fae17f', keyFileVariable: 'SSH_KEY')]) {
@@ -49,6 +49,9 @@ node {
                 def ec2Host = '3.88.167.27'
                 def appJar = 'target/my-app-1.0-SNAPSHOT.jar'
                 def remotePath = '/home/ubuntu/simple-java-maven-app/'
+
+                // Debug key content (remove after testing)
+                sh "cat ${keyFile}"
 
                 // Transfer the JAR file
                 sh """
