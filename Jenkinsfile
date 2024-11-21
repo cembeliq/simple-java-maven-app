@@ -50,13 +50,6 @@ node {
                 def appJar = 'target/my-app-1.0-SNAPSHOT.jar'
                 def remotePath = '/home/ubuntu/simple-java-maven-app/'
 
-                // Debugging: Check key properties
-                sh """
-                echo "$SSH_KEY" > /tmp/temp_ssh_key_debug
-                chmod 600 /tmp/temp_ssh_key_debug
-                head -n 2 /tmp/temp_ssh_key_debug
-                """
-
                 // Transfer the JAR file
                 sh """
                 scp -i ${SSH_KEY} -o StrictHostKeyChecking=no ${appJar} ${ec2User}@${ec2Host}:${remotePath}
@@ -66,8 +59,7 @@ node {
                 sh """
                 ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${ec2User}@${ec2Host} << EOF
                 pkill -f my-app-1.0-SNAPSHOT.jar || true
-                nohup java -jar ${remotePath}my-app-1.0-SNAPSHOT.jar > app.log 2>&1 &
-                EOF
+                nohup java -jar ${remotePath}my-app-1.0-SNAPSHOT.jar > app.log 2>&1
                 """
 
                 // Clean up the key file
