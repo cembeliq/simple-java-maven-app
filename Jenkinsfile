@@ -59,19 +59,19 @@ node {
 
                 // Transfer the JAR file
                 sh """
-                scp -i ${keyFile} -o StrictHostKeyChecking=no ${appJar} ${ec2User}@${ec2Host}:${remotePath}
+                scp -i ${SSH_KEY} -o StrictHostKeyChecking=no ${appJar} ${ec2User}@${ec2Host}:${remotePath}
                 """
 
                 // SSH into EC2
                 sh """
-                ssh -i ${keyFile} -o StrictHostKeyChecking=no ${ec2User}@${ec2Host} << EOF
+                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${ec2User}@${ec2Host} << EOF
                 pkill -f my-app-1.0-SNAPSHOT.jar || true
                 nohup java -jar ${remotePath}my-app-1.0-SNAPSHOT.jar > app.log 2>&1 &
                 EOF
                 """
 
                 // Clean up the key file
-                sh "rm -f ${keyFile}"
+                // sh "rm -f ${SSH_KEY}"
             }
         } catch (Exception e) {
             echo "Deployment failed: ${e.getMessage()}"
