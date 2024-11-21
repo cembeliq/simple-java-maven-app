@@ -40,7 +40,7 @@ node {
     }
     stage('Deploy') {
         try {
-            withCredentials([sshUserPrivateKey(credentialsId: '4486cd8b-9fdc-43c2-98b3-de74c2bd5c28', keyFileVariable: 'SSH_KEY')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: '6e200d7e-ce37-427e-b43a-48ac73fae17f', keyFileVariable: 'SSH_KEY')]) {
                 // Define variables
                 def ec2User = 'ubuntu'          // Replace with your EC2 instance username
                 def ec2Host = '3.88.167.27'       // Replace with your EC2 instance public IP
