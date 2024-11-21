@@ -8,9 +8,12 @@ node {
     }
     stage('Build') {
         try {
-            docker.image('maven:3.9.9').inside {
-                sh 'mvn clean package'
+            docker.withServer('unix:///var/run/docker.sock') {
+                docker.image('maven:3.9.9').inside {
+                    sh 'mvn clean package'
+                }
             }
+
         } catch (Exception e) {
             echo "Build failed: ${e.getMessage()}"
             error("Build stage failed")
