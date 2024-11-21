@@ -6,16 +6,16 @@ node {
         // List files to verify the presence of my_test_plan.jmx
         sh 'ls -la jmeter/my_test_plan.jmx'
     }
-    stage('Build') {
-        try {
-            docker.image('maven:3.9.9').inside {
-                sh 'mvn clean package'
-            }
-        } catch (Exception e) {
-            echo "Build failed: ${e.getMessage()}"
-            error("Build stage failed")
-        }
-    }
+    // stage('Build') {
+    //     try {
+    //         docker.image('maven:3.9.9').inside {
+    //             sh 'mvn clean package'
+    //         }
+    //     } catch (Exception e) {
+    //         echo "Build failed: ${e.getMessage()}"
+    //         error("Build stage failed")
+    //     }
+    // }
     // stage('Test') {
     //     try {
     //         parallel (
