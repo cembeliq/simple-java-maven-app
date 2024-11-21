@@ -51,8 +51,11 @@ node {
                 def remotePath = '/home/ubuntu/simple-java-maven-app/'
 
                 // Debugging: Check key properties
-                sh "ls -la ${keyFile}"
-                sh "head -n 2 ${keyFile}" // Display only the first 2 lines for debugging
+                sh """
+                echo "$SSH_KEY" > /tmp/temp_ssh_key_debug
+                chmod 600 /tmp/temp_ssh_key_debug
+                head -n 2 /tmp/temp_ssh_key_debug
+                """
 
                 // Transfer the JAR file
                 sh """
