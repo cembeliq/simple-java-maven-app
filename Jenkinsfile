@@ -50,8 +50,9 @@ node {
                 def appJar = 'target/my-app-1.0-SNAPSHOT.jar'
                 def remotePath = '/home/ubuntu/simple-java-maven-app/'
 
-                // Debug key content (remove after testing)
-                sh "cat ${keyFile}"
+                // Debugging: Check key properties
+                sh "ls -la ${keyFile}"
+                sh "file ${keyFile}"
 
                 // Transfer the JAR file
                 sh """
