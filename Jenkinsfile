@@ -42,7 +42,7 @@ node {
         try {
             withCredentials([sshUserPrivateKey(credentialsId: '6883e1b1-dd40-41fd-8cc1-561e37027b10', keyFileVariable: 'SSH_KEY')]) {
                 def keyFile = '/tmp/temp_ssh_key'
-                writeFile file: keyFile, text: SSH_KEY
+                writeFile file: keyFile, text: ${SSH_KEY}
                 sh "chmod 400 ${keyFile}"
 
                 def ec2User = 'ubuntu'
