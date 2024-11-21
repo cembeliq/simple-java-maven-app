@@ -39,10 +39,9 @@ node {
     //     }
     // }
     stage('Deploy') {
+        input message: 'Lanjutkan ke tahap Deploy?' 
         try {
             withCredentials([sshUserPrivateKey(credentialsId: '6883e1b1-dd40-41fd-8cc1-561e37027b10', keyFileVariable: 'SSH_KEY')]) {
-                // def keyFile = "${env.WORKSPACE}/temp_ssh_key"
-                // writeFile file: keyFile, text: SSH_KEY
                 sh "chmod 400 ${SSH_KEY}"
 
                 def ec2User = 'ubuntu'
