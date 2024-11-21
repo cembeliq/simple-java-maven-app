@@ -52,7 +52,7 @@ node {
 
                 // Debugging: Check key properties
                 sh "ls -la ${keyFile}"
-                sh "file ${keyFile}"
+                sh "head -n 2 ${keyFile}" // Display only the first 2 lines for debugging
 
                 // Transfer the JAR file
                 sh """
