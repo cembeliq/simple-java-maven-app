@@ -61,6 +61,8 @@ node {
                 nohup java -jar ${remotePath}my-app-1.0-SNAPSHOT.jar > app.log 2>&1
                 """
 
+                // interrupt
+                sleep time: 1, unit: 'MINUTES'
                 // Clean up the key file
                 // sh "rm -f ${SSH_KEY}"
             }
