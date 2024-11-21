@@ -64,6 +64,7 @@ node {
             echo "Deployment failed: ${e.getMessage()}"
             error("Deploy stage failed")
         }
+    }
     // stage('Deploy') {
     //     withCredentials([usernamePassword(credentialsId: 'my-ansible-credentials', usernameVariable: 'ANSIBLE_USER', passwordVariable: 'ANSIBLE_PASSWORD')]) {
     //         sh "ansible-playbook -i my-inventory -u ${ANSIBLE_USER} -k -v deploy.yml"
