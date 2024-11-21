@@ -40,25 +40,31 @@ node {
     }
     stage('Deploy') {
         try {
-            withCredentials([sshUserPrivateKey(credentialsId: '6e200d7e-ce37-427e-b43a-48ac73fae17f', keyFileVariable: 'SSH_KEY')]) {
-                // Define variables
-                def ec2User = 'ubuntu'          // Replace with your EC2 instance username
-                def ec2Host = '3.88.167.27'       // Replace with your EC2 instance public IP
-                def appJar = 'target/my-app-1.0-SNAPSHOT.jar' // Path to the built application JAR
-                def remotePath = '/home/ubuntu/simple-java-maven-app' // Remote directory on EC2
-                
-                // Transfer the JAR file to the EC2 instance
+            withCredentials([sshUserPrivateKey(credentialsId: '4486cd8b-9fdc-43c2-98b3-de74c2bd5c28', keyFileVariable: 'SSH_KEY')]) {
+                def keyFile = 'temp_ssh_key'
+                writeFile file: keyFile, text: SSH_KEY
+                sh "chmod 600 ${keyFile}"
+
+                def ec2User = 'ubuntu'
+                def ec2Host = '3.88.167.27'
+                def appJar = 'target/my-app-1.0-SNAPSHOT.jar'
+                def remotePath = '/home/ubuntu/simple-java-maven-app/'
+
+                // Transfer the JAR file
                 sh """
-                scp -i $SSH_KEY ${appJar} ${ec2User}@${ec2Host}:${remotePath}
+                scp -i ${keyFile} ${appJar} ${ec2User}@${ec2Host}:${remotePath}
                 """
 
-                // SSH into EC2 and restart the application
+                // SSH into EC2
                 sh """
-                ssh -i $SSH_KEY ${ec2User}@${ec2Host} << EOF
-                pkill -f my-app-1.0-SNAPSHOT.jar || true   # Stop any running instance of the app
+                ssh -i ${keyFile} ${ec2User}@${ec2Host} << EOF
+                pkill -f my-app-1.0-SNAPSHOT.jar || true
                 nohup java -jar ${remotePath}my-app-1.0-SNAPSHOT.jar > app.log 2>&1 &
                 EOF
                 """
+
+                // Clean up the key file
+                sh "rm -f ${keyFile}"
             }
         } catch (Exception e) {
             echo "Deployment failed: ${e.getMessage()}"
